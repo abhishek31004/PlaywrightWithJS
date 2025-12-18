@@ -17,7 +17,7 @@ test.beforeAll(async({browser})=>
 
 })
  
-test('@Webst Client App login', async ({}) => {
+test('Client App login', async ({}) => {
    //js file- Login js, DashboardPage
    const email = "abiqa@gmail.com";
    const productName = 'ZARA COAT 3';

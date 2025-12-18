@@ -7,6 +7,9 @@ import { clear, trace } from 'console';
  */
 const config = ({
   testDir: './tests',
+  //retries:1,
+  //workers:3,
+
   timeout: 30 * 1000,
   expect: { timeout: 5000 },
   reporter: 'html',

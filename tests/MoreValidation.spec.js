@@ -1,6 +1,8 @@
 const {test,expect}=require('@playwright/test')
 
-test("popup validation",async({page})=>
+//test.describe.configure({mode:'parallel'});
+//test.describe.configure({mode:'parallel'});
+test(`popup validation`,async({page})=>
 
     {
        await  page.goto("https://rahulshettyacademy.com/AutomationPractice/");
@@ -36,7 +38,7 @@ test("popup validation",async({page})=>
 )
 
 
-test("Capture a screenshot and visula comparison",async({page})=>
+test(`@Web Capture a screenshot and visual comparison`,async({page})=>
 {   
     await  page.goto("https://rahulshettyacademy.com/AutomationPractice/");
     //TO CHECK VISIBLEITY O
@@ -48,7 +50,7 @@ test("Capture a screenshot and visula comparison",async({page})=>
 }
 )
 
-test.only("visual test",async({page})=>
+test('visual test',async({page})=>
 {
    // await page.goto("https://www.flightaware.com/");
 

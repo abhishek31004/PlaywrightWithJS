@@ -8,7 +8,7 @@ const dataset = JSON.parse(JSON.stringify(require('../tests/utils/placeOrderTest
 
 for(const data of dataset)
 {
-test.only(`Client App login for ${data.productName}`, async ({ page }) => 
+test(`@Web Client App login for ${data.productName}`, async ({ page }) => 
    {
    const pOManager = new POManager(page);
    const loginPage = pOManager.getLoginPage();
