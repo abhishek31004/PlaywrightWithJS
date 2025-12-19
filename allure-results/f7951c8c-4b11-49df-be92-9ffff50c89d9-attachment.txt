@@ -1,2 +1,0 @@
-[ 'ZARA COAT 3', 'ADIDAS ORIGINAL', 'iphone 13 pro' ]
- | 6943f90d32ed8658713cb14c | 
