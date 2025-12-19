@@ -11,14 +11,8 @@ test('Playwright Special locators',async ({page})=>
 
     await page.getByText("Success! The Form has been submitted successfully!.").isVisible();
 
-
-
-
-
     await page.pause();
     
-
-
 }
 
 );
