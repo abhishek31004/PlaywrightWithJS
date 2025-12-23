@@ -3,6 +3,7 @@ const{customtest}=require('../tests/utils/test-base');
 
 
 const { POManager } = require('../pageObject/POManager');
+const { beforeEach } = require('node:test');
 //json->string-js object
 const dataset = JSON.parse(JSON.stringify(require('../tests/utils/placeOrderTestData.json')));
 
