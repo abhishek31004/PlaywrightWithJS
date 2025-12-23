@@ -1,8 +1,18 @@
-const { expect } = require("@playwright/test");
+import { test, expect, Locator, Page } from '@playwright/test'
 
-class OrdersReviewPage {
-    constructor(page) 
-    {
+
+export class OrdersReviewPage {
+
+    country: Locator;
+    emailId: Locator;
+    dropdown: Locator;
+    submit: Locator;
+    orderConfirmationText: Locator;
+    orderId: Locator;
+    page: Page;
+
+
+    constructor(page: Page) {
         this.page = page;
         this.country = page.locator("[placeholder*='Country']");
         this.dropdown = page.locator(".ta-results");
@@ -13,13 +23,16 @@ class OrdersReviewPage {
 
     }
 
-    async searchCountryAndSelect(countryCode, countryName)
-     {
-        await this.country.type(countryCode, { delay: 100 });
-        //await this.dropdown.waitFor();
+    async searchCountryAndSelect(countryCode: string, countryName: string) {
+       // let delay:number;
+          await this.country.type(countryCode, { delay: 100 });
+         await this.dropdown.waitFor();
         const optionsCount = await this.dropdown.locator("button").count();
         for (let i = 0; i < optionsCount; ++i) {
-            const text = await this.dropdown.locator("button").nth(i).textContent();
+
+            let text:any;
+            text = await this.dropdown.locator("button").nth(i).textContent();
+            
             if (text.trim() === countryName) {
                 await this.dropdown.locator("button").nth(i).click();
                 break;
@@ -28,7 +41,7 @@ class OrdersReviewPage {
 
     }
 
-    async VerifyEmailId(username) {
+    async VerifyEmailId(username: string) {
         await expect(this.emailId).toHaveText(username);
     }
 
