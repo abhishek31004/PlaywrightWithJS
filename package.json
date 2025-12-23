@@ -13,9 +13,12 @@
   "devDependencies": {
     "@playwright/test": "^1.57.0",
     "@types/node": "^24.10.1",
-    "allure-playwright": "^3.4.3"
+    "allure-playwright": "^3.4.3",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^12.4.0"
+    "@cucumber/cucumber": "^12.4.0",
+    "install": "^0.13.0",
+    "npm": "^11.7.0"
   }
 }

@@ -1,9 +1,7 @@
-const { test, expect } = require('@playwright/test');
-const{customtest}=require('../tests/utils/test-base');
-
-
-const { POManager } = require('../pageObject/POManager');
-const { beforeEach } = require('node:test');
+//const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
+import { customTest } from './utils_ts/test-base';
+import { POManager } from '../pageObject_ts/POManager';
 //json->string-js object
 const dataset = JSON.parse(JSON.stringify(require('../tests/utils/placeOrderTestData.json')));
 
@@ -28,7 +26,8 @@ test(`@Web Client App login for ${data.productName}`, async ({ page }) =>
 
    const ordersReviewPage = pOManager.getOrdersReviewPage();
    await ordersReviewPage.searchCountryAndSelect("ind", "India");
-   const orderId = await ordersReviewPage.SubmitAndGetOrderId();
+   let orderId:any;
+   orderId = await ordersReviewPage.SubmitAndGetOrderId();
    console.log(orderId);
    await dashboardPage.navigateToOrders();
    const ordersHistoryPage = pOManager.getorderHistoryPage();
@@ -39,7 +38,7 @@ test(`@Web Client App login for ${data.productName}`, async ({ page }) =>
 }
 
 
-customtest(`Client App Login`,async({page,testDataForOrder})=>
+customTest(`Client App Login`,async({page,testDataForOrder})=>
 {
   const pOManager = new POManager(page);
    const loginPage = pOManager.getLoginPage();
