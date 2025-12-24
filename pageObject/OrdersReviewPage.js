@@ -1,8 +1,7 @@
 const { expect } = require("@playwright/test");
 
 class OrdersReviewPage {
-    constructor(page) 
-    {
+    constructor(page) {
         this.page = page;
         this.country = page.locator("[placeholder*='Country']");
         this.dropdown = page.locator(".ta-results");
@@ -13,8 +12,7 @@ class OrdersReviewPage {
 
     }
 
-    async searchCountryAndSelect(countryCode, countryName)
-     {
+    async searchCountryAndSelect(countryCode, countryName) {
         await this.country.type(countryCode, { delay: 100 });
         //await this.dropdown.waitFor();
         const optionsCount = await this.dropdown.locator("button").count();
@@ -28,15 +26,19 @@ class OrdersReviewPage {
 
     }
 
-    async VerifyEmailId(username) {
+    async verifyEmailId(username) {
         await expect(this.emailId).toHaveText(username);
     }
+    
 
-    async SubmitAndGetOrderId() {
+    async submitAndGetOrderId() {
+        // wait until the submit button is truly clickable
+        await this.submit.waitFor({ state: 'visible' });
         await this.submit.click();
 
         await expect(this.orderConfirmationText).toHaveText("Thankyou for the order.");
         return await this.orderId.textContent();
     }
+
 }
 module.exports = { OrdersReviewPage };
