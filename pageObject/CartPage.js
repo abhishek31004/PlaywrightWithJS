@@ -4,7 +4,7 @@ class CartPage
 constructor(page)
 {
     this.page = page;
-    this.cartProducts = page.locator("div li").first();
+    this.cartProducts = page.locator("div li");
     this.productsText = page.locator(".card-body b");
     this.cart =  page.locator("[routerlink*='cart']");
     this.orders = page.locator("button[routerlink*='myorders']");
@@ -12,23 +12,34 @@ constructor(page)
 
 }
 
-async VerifyProductIsDisplayed(productName)
+async verifyProductIsDisplayed(productName)
 {
-   
-    await this.cartProducts.waitFor();
-    const bool =await this.getProductLocator(productName).isVisible();
+    await this.page.waitForLoadState('domcontentloaded');
+    
+    // Get all product headings for debugging
+    const allHeadings = await this.page.locator("h3").allTextContents();
+    console.log("Products in cart:", allHeadings);
+    
+    const locator = this.getProductLocator(productName);
+    try {
+        await locator.waitFor({ state: 'visible', timeout: 5000 });
+    } catch (error) {
+        console.error(`Product "${productName}" not found in cart. Available products: ${allHeadings.join(', ')}`);
+        throw error;
+    }
+    
+    const bool = await locator.isVisible();
     expect(bool).toBeTruthy();
-
 }
 
-async Checkout()
+async checkOut()
 {
     await this.checkout.click();
 }
 
  getProductLocator(productName)
 {
-    return  this.page.locator("h3:has-text('"+productName+"')");
+    return  this.page.locator("h3").filter({ hasText: productName.trim() });
 }
 
 }

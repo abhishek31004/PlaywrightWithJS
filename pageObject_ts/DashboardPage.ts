@@ -21,18 +21,27 @@ constructor(page:Page)
 
 async searchProductAddCart(productName:string)
 {
-   
-    const titles= await this.productsText.allTextContents();
-    console.log(titles);
-    const count = await this.products.count();
-    for(let i =0; i < count; ++i)
-    {
-    if(await this.products.nth(i).locator("b").textContent() === productName)
-    {
-        //add to cart
-        await this.products.nth(i).locator("text= Add To Cart").click();
-        break;
-     }
+    // Wait for products to load before searching
+    await this.productsText.first().waitFor({ state: 'visible', timeout: 5000 });
+    
+    const titles = await this.productsText.allTextContents();
+    console.log("Available products:", titles);
+
+    const allProducts = await this.products.all();
+    for (const product of allProducts) {
+        const text = await product.locator("b").textContent();
+        // Normalize comparison: trim both sides and compare as-is
+        if (text?.trim() === productName.trim()) {
+            console.log(`Found product: ${productName}, clicking Add To Cart`);
+            // Use more reliable button locator
+            const addBtn = product.locator("button").filter({ hasText: /Add To Cart/ });
+            await addBtn.click();
+            
+            // Wait for cart to update
+            await this.page.waitForLoadState('domcontentloaded');
+            console.log(`Product ${productName} added to cart`);
+            break;
+        }
     }
 }
 

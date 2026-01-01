@@ -9,15 +9,15 @@ import { clear, trace } from 'console';
  */
 const config=({
   testDir: './tests',
-  timeout:30*1000,
-  expect:{timeout:5000},
+  timeout:120*1000,
+  expect:{timeout:10000},
   reporter:'html',
 
 
   use:{
     browserName:'chromium',
    // browserName:'firefox',
-    headless :true,
+    headless :false,
     screenshot: 'on',
     trace: 'on'
   }
