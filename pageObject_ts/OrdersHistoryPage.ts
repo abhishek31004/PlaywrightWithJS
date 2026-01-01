@@ -1,5 +1,4 @@
 import{test,expect,Locator,Page} from '@playwright/test';
-import { stringify } from 'querystring';
 export class OrdersHistoryPage {
     
         ordersTable:Locator;
@@ -15,19 +14,28 @@ export class OrdersHistoryPage {
     }
     async searchOrderAndSelect(orderId:any) {
 
-        await this.ordersTable.waitFor();
+        await this.ordersTable.waitFor({ timeout: 30000 });
+        const cleanOrderId = orderId.trim();
+        let found = false;
+        
         for (let i = 0; i < await this.rows.count(); ++i) {
             const rowOrderId = await this.rows.nth(i).locator("th").textContent();
-            if (orderId.includes(rowOrderId)) {
+            const cleanRowOrderId = rowOrderId?.trim() || "";
+            
+            // Check if rowOrderId is contained in the orderId (order IDs can have prefixes)
+            if (cleanOrderId.includes(cleanRowOrderId)) {
                 await this.rows.nth(i).locator("button").first().click();
+                found = true;
                 break;
             }
         }
-
+        
+       
     }
 
     async getOrderId() {
-        return await this.orderdIdDetails.textContent();
+        const orderId = await this.orderdIdDetails.textContent();
+        return orderId?.trim() || "";
     }
 
 }

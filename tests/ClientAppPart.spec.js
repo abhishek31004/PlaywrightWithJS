@@ -32,7 +32,7 @@ for(const data of dataset) {
 
     // Review the order and submit
     const ordersReviewPage = pOManager.getOrdersReviewPage();
-    await page.pause(); // Pause for debugging purposes
+   // await page.pause(); // Pause for debugging purposes
     await ordersReviewPage.searchCountryAndSelect("ind", "India");
     const orderId = await ordersReviewPage.submitAndGetOrderId();
     console.log(orderId);

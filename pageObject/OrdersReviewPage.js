@@ -13,13 +13,32 @@ class OrdersReviewPage {
     }
 
     async searchCountryAndSelect(countryCode, countryName) {
+        // Clear any existing input first
+        await this.country.clear();
+        // Type the country code
         await this.country.type(countryCode, { delay: 100 });
-        //await this.dropdown.waitFor();
-        const optionsCount = await this.dropdown.locator("button").count();
+        
+        // Wait for the dropdown to become visible
+        await this.dropdown.waitFor({ state: 'visible', timeout: 5000 });
+        
+        // Add a small delay to ensure dropdown options are rendered
+        await this.page.waitForTimeout(500);
+        
+        // Get all option buttons
+        const options = this.dropdown.locator("button");
+        const optionsCount = await options.count();
+        
+        console.log(`Found ${optionsCount} options in dropdown for country: ${countryName}`);
+        
+        // Search for the matching country
+        let found = false;
         for (let i = 0; i < optionsCount; ++i) {
-            const text = await this.dropdown.locator("button").nth(i).textContent();
+            const text = await options.nth(i).textContent();
+            //console.log(`Option ${i}: "${text.trim()}"`);
             if (text.trim() === countryName) {
-                await this.dropdown.locator("button").nth(i).click();
+                console.log(`Found matching country: ${countryName}`);
+                await options.nth(i).click();
+                found = true;
                 break;
             }
         }
@@ -32,11 +51,16 @@ class OrdersReviewPage {
     
 
     async submitAndGetOrderId() {
-        // wait until the submit button is truly clickable
+        // Wait until the submit button is clickable and click it
         await this.submit.waitFor({ state: 'visible' });
         await this.submit.click();
 
+        // Wait for the order confirmation text to appear (faster than networkidle)
+        await this.orderConfirmationText.waitFor({ state: 'visible', timeout: 10000 });
         await expect(this.orderConfirmationText).toHaveText("Thankyou for the order.");
+        
+        // Wait for the order ID to be visible before extracting it
+        await this.orderId.waitFor({ state: 'visible', timeout: 5000 });
         return await this.orderId.textContent();
     }
 
